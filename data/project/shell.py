@@ -80,7 +80,7 @@ def main() -> None:
     """
     print(help_message())
 
-    # connection = get_connection()
+    connection = get_connection()
 
     dataset = None
     dataset_type = RentalDataset  # TODO change this to your own type
@@ -89,18 +89,18 @@ def main() -> None:
         "csv": lambda t: CSVHandler.write_dataset(dataset, t[2]),
         "xlsx": lambda t: XLSXHandler.write_dataset(dataset, t[2]),
         "json": lambda t: JSONHandler.write_dataset(dataset, t[2]),
-        # "mysql": lambda t: SQLHandler.write_dataset(dataset, connection)
+        "mysql": lambda t: SQLHandler.write_dataset(dataset, connection)
     }
 
     readers = {
         "csv": lambda t: CSVHandler.read_dataset(dataset_type, t[2]),
         "xlsx": lambda t: XLSXHandler.read_dataset(dataset_type, t[2]),
         "json": lambda t: JSONHandler.read_dataset(dataset_type, t[2]),
-        # "mysql": lambda t: SQLHandler.read_dataset(dataset_type, connection)
+        "mysql": lambda t: SQLHandler.read_dataset(dataset_type, connection)
     }
 
     while True:
-        # try:
+        try:
             print("$", end=" ")
             line = input()
             tokens = line.split(" ")
@@ -121,16 +121,16 @@ def main() -> None:
                 visualization.airports_by_countries(dataset)
             elif tokens[0] == "query-3": # TODO
                 visualization.distances_by_types(dataset)
-            elif tokens[0] == "query-4": # it is an extra example
+            elif tokens[0] == "query-4":
                 visualization.distances_by_types_with_limit(dataset)
-            elif tokens[0] == "query-5": # it is an extra example
+            elif tokens[0] == "query-5":
                 visualization.genders_by_ages_heatmap(dataset)
-            elif tokens[0] == "query-6": # it is an extra example
+            elif tokens[0] == "query-6":
                 visualization.distances_by_countries_and_sexes(dataset)
             else:
                 raise RuntimeError("unknown command")
-        # except Exception:
-        #     print("command cannot be executed")
+        except Exception:
+                print("command cannot be executed")
 
 
 if __name__ == "__main__":
